@@ -19,7 +19,7 @@ Before you proceed, ensure you have the following installed:
 1. **Clone the Repository**
 
 ```bash
-$ git clone https://github.com/your-username/popcorn-palace.git
+$ git clone https://github.com/AmirAbuELHija/popcorn-palace.git
 $ cd popcorn-palace
 ```
 
@@ -27,7 +27,7 @@ $ cd popcorn-palace
     - Use the provided `compose.yml` file to run PostgreSQL locally:
 
 ```bash
-$ docker-compose up -d
+$ docker compose up -d
 ```
 
 - This will initialize a PostgreSQL database with:
@@ -38,7 +38,7 @@ $ docker-compose up -d
 3. **Build the Project** Run the following command to build the project using Maven:
 
 ```bash
-$ mvnw clean install
+$ mvn clean install
 ```
 
 4. **Run the Application** To start the Spring Boot application:
@@ -78,7 +78,7 @@ To ensure data integrity, consistent behavior, and robust error handling, the fo
 2. **Valid Duration**
     - Movie duration must be specified in **minutes** and must be a **positive integer** greater than zero.
 3. **Valid Rating**
-    - Ratings must be between **0.0** and **10.0**.
+    - Ratings must be between **1.0** and **10.0**.
 4. **Release Year**
     - Release year must be within a **reasonable range** (e.g., between 1900 and the current year).
 
@@ -86,7 +86,7 @@ To ensure data integrity, consistent behavior, and robust error handling, the fo
 
 ### Showtime Management
 1. **Showtime Duration Consistency**
-    - The duration of the selected movie must match the showtime duration (within a **5-minute tolerance**).
+    - The duration of the selected movie must match the showtime duration (within a **10-minute tolerance**).
 2. **No Overlapping Showtimes**
     - Showtimes for the **same theater** must not overlap to avoid conflicts.
 3. **Valid Price**
@@ -106,7 +106,7 @@ To ensure data integrity, consistent behavior, and robust error handling, the fo
 3. **Valid UUID for User IDs**
     - Each `userId` must follow the **UUID v4** format for consistency and security.
 4. **Booking Time Limits**
-    - Booking requests should only be allowed up to **15 minutes before** showtime start.
+    - Booking requests should only be allowed before showtime start.
 5. **Cancellation Policy**
     - Tickets cannot be canceled less than **30 minutes before** showtime.
 
@@ -149,7 +149,7 @@ The system includes comprehensive tests for all endpoints and business logic. Te
 To run unit tests:
 
 ```bash
-$ mvnw test
+$ mvn test
 ```
 
 ## Database Management
