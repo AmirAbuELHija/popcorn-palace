@@ -19,7 +19,7 @@ Before you proceed, ensure you have the following installed:
 1. **Clone the Repository**
 
 ```bash
-$ git clone https://github.com/your-username/popcorn-palace.git
+$ git clone https://github.com/AmirAbuELHija/popcorn-palace.git
 $ cd popcorn-palace
 ```
 
