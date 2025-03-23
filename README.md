@@ -78,7 +78,7 @@ To ensure data integrity, consistent behavior, and robust error handling, the fo
 2. **Valid Duration**
     - Movie duration must be specified in **minutes** and must be a **positive integer** greater than zero.
 3. **Valid Rating**
-    - Ratings must be between **0.0** and **10.0**.
+    - Ratings must be between **1.0** and **10.0**.
 4. **Release Year**
     - Release year must be within a **reasonable range** (e.g., between 1900 and the current year).
 
@@ -86,7 +86,7 @@ To ensure data integrity, consistent behavior, and robust error handling, the fo
 
 ### Showtime Management
 1. **Showtime Duration Consistency**
-    - The duration of the selected movie must match the showtime duration (within a **5-minute tolerance**).
+    - The duration of the selected movie must match the showtime duration (within a **10-minute tolerance**).
 2. **No Overlapping Showtimes**
     - Showtimes for the **same theater** must not overlap to avoid conflicts.
 3. **Valid Price**
@@ -100,15 +100,13 @@ To ensure data integrity, consistent behavior, and robust error handling, the fo
 
 ### Ticket Booking Management
 1. **Seat Validation**
-    - Seat numbers must be within the valid range for the selected theater (e.g., between **1** and **theater capacity**).
+    - Seat numbers must be positive.
 2. **No Double-Booking**
     - Ensure no seat is booked twice for the same showtime.
 3. **Valid UUID for User IDs**
     - Each `userId` must follow the **UUID v4** format for consistency and security.
 4. **Booking Time Limits**
-    - Booking requests should only be allowed up to **15 minutes before** showtime start.
-5. **Cancellation Policy**
-    - Tickets cannot be canceled less than **30 minutes before** showtime.
+    - Booking requests should only be allowed before the start time.
 
 ---
 
