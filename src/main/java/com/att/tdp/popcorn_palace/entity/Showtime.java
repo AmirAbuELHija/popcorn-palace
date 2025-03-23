@@ -17,8 +17,14 @@ public class Showtime {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     @Column(nullable = false)
     private Long movieId;
+
+    @Min(value = 1, message = "Price must be at least 1.0")
+    @Max(value = 100, message = "Price cannot exceed 100.0")
+    @Column(nullable = false)
+    private double price;
 
     @NotBlank(message = "Theater name cannot be empty")
     @Column(nullable = false)
@@ -30,8 +36,4 @@ public class Showtime {
     @Column(nullable = false)
     private LocalDateTime endTime;
 
-    @Min(value = 1, message = "Price must be at least 1.0")
-    @Max(value = 100, message = "Price cannot exceed 100.0")
-    @Column(nullable = false)
-    private double price;
 }

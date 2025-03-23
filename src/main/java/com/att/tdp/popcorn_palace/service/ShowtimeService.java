@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.time.temporal.TemporalUnit;
 import java.util.List;
 
 @Service
@@ -27,13 +26,14 @@ public class ShowtimeService {
         Movie movie = movieRepository.findById(showtime.getMovieId())
                 .orElseThrow(() -> new ResourceNotFoundException("Movie ID " + showtime.getMovieId() + " does not exist."));
 
+
         long showtimeDurationMinutes = Duration.between(showtime.getStartTime(), showtime.getEndTime()).toMinutes();
         //check the time range and duration
         if (showtimeDurationMinutes < movie.getDuration()) {
             throw new InvalidInputException("Showtime duration cannot be shorter than the movie duration.");
         }
         //Duration too long (more than 10 mins over movie duration)
-        if (showtimeDurationMinutes > movie.getDuration() + 10) {
+        if (showtimeDurationMinutes > movie.getDuration() + 10 ) {
             throw new InvalidInputException("Showtime duration cannot be more than 10 minutes longer than the movie duration.");
         }
 
@@ -53,26 +53,32 @@ public class ShowtimeService {
     @Transactional
     public Showtime updateShowtime(Long id, Showtime updatedShowtime) {
         Showtime existingShowtime = showtimeRepository.findById(id)
-                //check if the showtime id exists
                 .orElseThrow(() -> new ResourceNotFoundException("Showtime not found with ID: " + id));
 
         Movie movie = movieRepository.findById(updatedShowtime.getMovieId())
                 .orElseThrow(() -> new ResourceNotFoundException("Movie ID " + updatedShowtime.getMovieId() + " does not exist."));
+
         long showtimeDurationMinutes = Duration.between(updatedShowtime.getStartTime(), updatedShowtime.getEndTime()).toMinutes();
-        // check time range
-        if (showtimeDurationMinutes < movie.getDuration()) {
-            throw new InvalidInputException("Showtime duration cannot be shorter than the movie duration.");
-        }
-        if (showtimeDurationMinutes > movie.getDuration() + 10) {
-            throw new InvalidInputException("Showtime duration cannot be more than 10 minutes longer than the movie duration.");
+        long movieDurationMinutes = movie.getDuration();
+        //problem with error throwing
+        if (showtimeDurationMinutes < (movieDurationMinutes - 5) ||
+                showtimeDurationMinutes > (movieDurationMinutes + 10)) {
+            throw new InvalidInputException("Showtime duration must be within ±5 minutes of the movie's duration.");
         }
 
-        boolean overlappingExists =  showtimeRepository.existsByTheaterAndStartTimeBetween(updatedShowtime.getTheater(), updatedShowtime.getStartTime(), updatedShowtime.getEndTime());
-        // Check for overlapping showtimes
-        if (overlappingExists && !existingShowtime.getId().equals(updatedShowtime.getId())) {
+        // Improved Conflict Check for Updates
+        boolean overlappingExists = showtimeRepository.existsByTheaterAndOverlappingTimeRangeExcludingSelf(
+                updatedShowtime.getTheater(),
+                updatedShowtime.getStartTime().minusMinutes(5), // 5-minute flexibility
+                updatedShowtime.getEndTime().plusMinutes(5),     // 5-minute flexibility
+                existingShowtime.getId()                         // Exclude itself
+        );
+
+        if (overlappingExists) {
             throw new DataConflictException("Showtime conflicts with an existing showtime in the same theater.");
         }
 
+        // Update Showtime Details
         existingShowtime.setTheater(updatedShowtime.getTheater());
         existingShowtime.setStartTime(updatedShowtime.getStartTime());
         existingShowtime.setEndTime(updatedShowtime.getEndTime());
@@ -80,6 +86,7 @@ public class ShowtimeService {
 
         return showtimeRepository.save(existingShowtime);
     }
+
 
 
     // Get a showtime by ID

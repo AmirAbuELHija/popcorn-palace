@@ -32,10 +32,10 @@ class ShowtimeControllerTest {
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(showtimeController).build();
 
-        showtime = new Showtime(1L, 2L, "Main Theater",
+        showtime = new Showtime(1L, 2L,20.0, "Main Theater",
                 LocalDateTime.now().plusDays(1),
-                LocalDateTime.now().plusDays(1).plusHours(2),
-                20.0);
+                LocalDateTime.now().plusDays(1).plusHours(2)
+                );
     }
 
     //Add Showtime
@@ -48,10 +48,10 @@ class ShowtimeControllerTest {
                         .content("""
                 {
                     "movieId": 2,
+                    "price": 20.0,
                     "theater": "Main Theater",
                     "startTime": "2025-04-01T14:00:00",
-                    "endTime": "2025-04-01T16:00:00",
-                    "price": 20.0
+                    "endTime": "2025-04-01T16:00:00"
                 }
                 """))
                 .andExpect(status().isOk());
@@ -67,11 +67,11 @@ class ShowtimeControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                 {
-                    "movieId": 2,
+                    "movieId": 2,                   
+                    "price": 20.0,
                     "theater": "Main Theater",
                     "startTime": "2025-04-01T14:00:00",
-                    "endTime": "2025-04-01T16:00:00",
-                    "price": 20.0
+                    "endTime": "2025-04-01T16:00:00"
                 }
                 """))
                 .andExpect(status().isConflict());
@@ -88,10 +88,11 @@ class ShowtimeControllerTest {
                         .content("""
                 {
                     "movieId": 99,
+                    "price": 20.0,
                     "theater": "Main Theater",
                     "startTime": "2025-04-01T14:00:00",
-                    "endTime": "2025-04-01T16:00:00",
-                    "price": 20.0
+                    "endTime": "2025-04-01T16:00:00"
+                    
                 }
                 """))
                 .andExpect(status().isNotFound());

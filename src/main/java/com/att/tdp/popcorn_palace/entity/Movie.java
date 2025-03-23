@@ -36,7 +36,7 @@ public class Movie {
     private double rating;
 
     @Min(value = 1900, message = "Release year must be after 1900")
-    @Max(value = 2025, message = "Release year cannot exceed 2100")
+    @Max(value = 2025, message = "Release year cannot exceed 2025")
     @Column(nullable = false)
     private int releaseYear;
 }
