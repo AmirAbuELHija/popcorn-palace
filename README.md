@@ -38,7 +38,7 @@ $ docker-compose up -d
 3. **Build the Project** Run the following command to build the project using Maven:
 
 ```bash
-$ mvnw clean install
+$ mvn clean install
 ```
 
 4. **Run the Application** To start the Spring Boot application:
